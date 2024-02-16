@@ -1,16 +1,20 @@
 import sys
 
-def error_message_detail(error,error_detail:sys):
-    file_name= exc_tb.tb_frame.f_code.filename
-    _,_,exc_tb=error_detail.exc_info()    #exc_tb has details about which line and which code has the exception
-    error_message="Error occured in python script name[{0}] line number [{1}] error message[{2}]".format(file_name, exc_tb.tb_lineno, str(error))
-    return error_message
-
 class Custom_Exception(Exception):
-    def __init__(self,error_message,error_detail:sys):
-       super.__init__(error_message)
-       self.error_message=error_message_detail(error_message,error_detail=error_detail)
-    
+    def __init__(self, message, errors=None):
+        super().__init__(message)
+        self.errors = errors
+        # Extract traceback details if you want to use them
+        _, _, exc_tb = sys.exc_info()
+        if exc_tb is not None:
+            self.file_name = exc_tb.tb_frame.f_code.co_filename
+            self.line_number = exc_tb.tb_lineno
+        else:
+            self.file_name = None
+            self.line_number = None
+
     def __str__(self):
-     return self.error_message
-  
+        if self.file_name and self.line_number:
+            return f"{super().__str__()} (File: {self.file_name}, Line: {self.line_number})"
+        else:
+            return super().__str__()

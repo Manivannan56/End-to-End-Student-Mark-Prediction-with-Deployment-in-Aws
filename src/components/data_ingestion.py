@@ -6,6 +6,12 @@ from src.logger import logging
 
 from sklearn.model_selection import train_test_split
 from dataclasses import dataclass
+from src.components.data_transformation import Data_transformation
+from src.components.data_transformation import Data_transformation_config
+
+from src.components.model_trainer import ModelTrainerConfig
+from src.components.model_trainer import Model_trainer
+
 
 @dataclass
 class Data_ingestion_config:
@@ -19,7 +25,7 @@ class Data_Ingestion:
 
     def initiate_data_ingestion(self):
         logging.info("Entered the Data Ingestion method or component")    
-        
+
 
         try:
             df=pd.read_csv("/Users/manivannans/Desktop/End_to_End_Machine_learning_project/notebook/stud.csv")
@@ -42,5 +48,12 @@ class Data_Ingestion:
         
 
 if __name__=="__main__":
-    ob=Data_Ingestion()
-    ob.initiate_data_ingestion()
+    obj=Data_Ingestion()
+    train_data,test_data=obj.initiate_data_ingestion()
+    data_transformation=Data_transformation()
+    train_arr,test_arr,_=data_transformation.initiate_data_transformation(train_data,test_data)
+
+    model_trainer=Model_trainer()
+    print(model_trainer.initiate_model_trainer(train_arr,test_arr))
+
+
