@@ -7,4 +7,5 @@ pyarrow
 catboost 
 xgboost
 dill
+Flask
 -e.
